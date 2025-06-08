@@ -10,8 +10,7 @@ class PMTree {
  public:
     struct Node {
         char value;
-        std::vector<std::unique_ptr<Node>> children;
-        
+        std::vector<std::unique_ptr<Node>> children;       
         explicit Node(char val) : value(val) {}
     };
 
