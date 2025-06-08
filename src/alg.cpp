@@ -5,7 +5,8 @@
 #include  <cstdlib>
 #include <algorithm>
 #include <stdexcept>
-#include  "tree.h"
+#include <memory>
+#include "tree.h"
 
 PMTree::PMTree(const std::vector<char>& elements) {
     if (elements.empty()) {
@@ -46,7 +47,8 @@ std::vector<std::vector<char>> PMTree::getAllPerms() const {
     return result;
 }
 
-void PMTree::getAllPermsHelper(const Node* node, std::vector<char>& current, std::vector<std::vector<char>>& result) const {
+void PMTree::getAllPermsHelper(const Node* node, std::vector<char>& current,
+                              std::vector<std::vector<char>>& result) const {
     if (node->children.empty()) {
         result.push_back(current);
         return;
@@ -61,7 +63,7 @@ void PMTree::getAllPermsHelper(const Node* node, std::vector<char>& current, std
 
 std::vector<char> PMTree::getPerm1(int num) const {
     if (num < 1 || num > totalPermutations) {
-        throw std::out_of_range("Permutation number out of range");
+        return {};
     }
 
     std::vector<char> result;
@@ -70,7 +72,8 @@ std::vector<char> PMTree::getPerm1(int num) const {
     return result;
 }
 
-void PMTree::getPerm1Helper(const Node* node, int& currentNum, int targetNum, std::vector<char>& result) const {
+void PMTree::getPerm1Helper(const Node* node, int& currentNum, int targetNum,
+                           std::vector<char>& result) const {
     if (node->children.empty()) {
         currentNum++;
         return;
@@ -88,12 +91,12 @@ void PMTree::getPerm1Helper(const Node* node, int& currentNum, int targetNum, st
 
 std::vector<char> PMTree::getPerm2(int num) const {
     if (num < 1 || num > totalPermutations) {
-        throw std::out_of_range("Permutation number out of range");
+        return {};
     }
 
     std::vector<char> result;
-    int remaining = num - 1;
     const Node* current = root.get();
+    int remaining = num - 1;
 
     while (!current->children.empty()) {
         int branchSize = factorial(current->children.size() - 1);
@@ -120,10 +123,10 @@ std::vector<std::vector<char>> getAllPerms(const PMTree& tree) {
     return tree.getAllPerms();
 }
 
-std::vector<char> getPerm1(PMTree& tree, int num) {
+std::vector<char> getPerm1(const PMTree& tree, int num) {
     return tree.getPerm1(num);
 }
 
-std::vector<char> getPerm2(PMTree& tree, int num) {
+std::vector<char> getPerm2(const PMTree& tree, int num) {
     return tree.getPerm2(num);
 }
