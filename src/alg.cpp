@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <memory>
+#include <vector>
 #include "tree.h"
 
 PMTree::PMTree(const std::vector<char>& elements) {
